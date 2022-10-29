@@ -17,8 +17,8 @@ clock = pygame.time.Clock()
 def dot(center, color = 'white'):
     pygame.draw.circle(screen, color, center, 1)
 
-def line(st_pos, end_pos, color = 'white'):
-    pygame.draw.line(screen, color, st_pos, end_pos, 3)
+def line(st_pos, end_pos, color = 'white', width = 3):
+    pygame.draw.line(screen, color, st_pos, end_pos, width)
 
 def top_rot_line(D, d, angle):
     x = D * math.cos(math.radians(angle)) + (WIDTH/2)
@@ -42,6 +42,7 @@ class Cube():
     def render(self):
         top_p1 = top_rot_line(self.D, self.d, self.t + 0)
         bot_p1 = bot_rot_line(self.D, self.d, self.t + 0)
+        line(top_p1, bot_p1)
 
         top_p2 = top_rot_line(self.D, self.d, self.t + 90)
         bot_p2 = bot_rot_line(self.D, self.d, self.t + 90)
@@ -58,7 +59,6 @@ class Cube():
         line(bot_p1, bot_p2)
         line(bot_p2, bot_p3)
         line(bot_p3, bot_p4)
-        line(top_p1, bot_p1, 'red')
         line(bot_p4, bot_p1)
 
         line(top_p1, top_p2)
@@ -81,7 +81,7 @@ class Triangle():
         bot_p3 = bot_rot_line(self.D, self.d, (self.t + 180))
         bot_p4 = bot_rot_line(self.D, self.d, (self.t + 270))
 
-        line(top_p, bot_p1, 'red')
+        line(top_p, bot_p1)
         line(top_p, bot_p2)
         line(top_p, bot_p3)
         line(top_p, bot_p4)
@@ -94,6 +94,8 @@ class Triangle():
 cube = Cube(200, 25, Vector2((WIDTH/2, HEIGHT/2)))
 triangle = Triangle(200, 25, Vector2((WIDTH/2, HEIGHT/2)))
 
+render_cube = True
+
 while True:
     keys = pygame.key.get_pressed()
 
@@ -104,19 +106,24 @@ while True:
             sys.exit()
 
         if event.type == SCREEN_UPDATE:
-            # triangle.t += 0.1
+            triangle.t += 0.01
             cube.t += 0.01
 
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                render_cube = not render_cube
 
     screen.fill((25, 25, 25))
-    # triangle.render()
-    cube.render()
+
+    cube.render() if render_cube else triangle.render()
 
     if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
         cube.t += 0.9
+        triangle.t += 0.9
 
     if keys[pygame.K_LEFT] or keys[pygame.K_a]:
         cube.t -= 2
+        triangle.t -= 2
 
     pygame.display.flip()
     clock.tick(FPS)
