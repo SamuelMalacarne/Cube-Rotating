@@ -12,13 +12,12 @@ HEIGHT = 600
 pygame.init()
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption('CUBE')
+icon = pygame.image.load('icon.png').convert_alpha()
+pygame.display.set_icon(icon)
 SCREEN_UPDATE = pygame.USEREVENT
 pygame.time.set_timer(SCREEN_UPDATE, 1)
 clock = pygame.time.Clock()
-
-# img = cv2.imread('.\img\pippo.jpeg')
-
-
 colors = ['red', 'green', 'blue', 'yellow']
 
 
