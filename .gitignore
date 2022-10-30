@@ -1,0 +1,6 @@
+*.png
+*.jpg
+*.jpeg
+test.py
+
+!window.png
